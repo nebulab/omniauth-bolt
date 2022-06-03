@@ -60,11 +60,16 @@ module OmniAuth
         post_data = URI.encode_www_form(payload)
         res = http.request(req, post_data)
         response = JSON.parse(res.body)
+
         @expiration_time = Time.now.utc + response['expires_in']
         @refresh_token = response['refresh_token']
         @refresh_token_scope = response['refresh_token_scope']
         @access_token = response['access_token']
         @user_uid = response['id_token']
+
+        # don't need these values to refresh access_token so better remove them
+        session.delete('authorization_code')
+        session.delete('scope')
 
         super
       end
