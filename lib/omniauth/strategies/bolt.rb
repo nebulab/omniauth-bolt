@@ -30,20 +30,21 @@ module OmniAuth
         }
       end
 
-      def request_phase
-        session[:authorization_code] = request.params['authorization_code']
-        session[:scope] = request.params['scope']
+      def query_string
+        "?authorization_code=#{request.params['code']}&scope=#{request.params['scope']}&state=#{request.params['state']}"
+      end
 
+      def request_phase
         redirect callback_url
       end
 
       def callback_phase
         payload = {
           grant_type: 'authorization_code',
-          code: session['authorization_code'],
+          code: request.params['authorization_code'],
           client_id: options['publishable_key'],
           # scope: 'openid+bolt.account.manage',
-          scope: session['scope'],
+          scope: request.params['scope'],
           client_secret: options['api_key']
         }
 
