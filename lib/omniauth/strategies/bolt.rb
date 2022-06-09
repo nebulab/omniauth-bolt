@@ -31,7 +31,8 @@ module OmniAuth
       end
 
       def query_string
-        "?authorization_code=#{request.params['code']}&scope=#{request.params['scope']}&state=#{request.params['state']}"
+        authorization_code = request.params['code'] || request.params['authorization_code']
+        "?authorization_code=#{authorization_code}&scope=#{request.params['scope']}&state=#{request.params['state']}"
       end
 
       def request_phase
