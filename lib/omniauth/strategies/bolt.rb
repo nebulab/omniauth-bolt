@@ -68,6 +68,7 @@ module OmniAuth
         @refresh_token_scope = response['refresh_token_scope']
         @access_token = response['access_token']
         @user_uid = response['id_token']
+        @scope = response['scope']
 
         # don't need these values to refresh access_token so better remove them
         session.delete('authorization_code')
